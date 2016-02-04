@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Sanity check that data and data/raw exist to process Twitter data
+[ ! -e "data" ]     && echo " [ ERROR ] No data to process"     && exit 1
+[ ! -e "data/raw" ] && echo " [ ERROR ] No raw data to process" && exit 1
+
+# If 'out' directory does not exist, then create it
+[ ! -e "out" ] && mkdir out
+
+# If 'csv' directory does not exist, then create it
+[ ! -e "csv" ] && mkdir csv
+
+# Take the 35+ million raw tweets and extract geo-enabled tweets
+#time ./workflow-raw-to-geo.py >> out/out.workflow-raw-to-geo
+
+# Take the geo-enabled tweets and find all those that mention "Ebola" 
+#time ./workflow-geo-to-geoebola.py >> out/out.workflow-geo-to-geoebola
+
+# Take the geo-enabled tweets that mention Ebola and extract those near different sites
+#time ./workflow-geoebola-to-sites.py >> out/out.workflow-geoebola-to-sites
+
+# Take each site and apply TIC. Results are saved to 'csv' directory.
+time ./workflow-sites-to-tic.py >> out/out.workflow-sites-to-tic
+
+# Take each site and apply Behavior Response scripts. Results are saved to 'csv' directory.
+#time ./workflow-sites-to-bresponse.py >> out/out.workflow-sites-to-bresponse
+
+# Take geo-enabled tweets that mention Ebola and extract the locations, which are saved as a csv file
+#time ./workflow-geoebola-to-geocsv.py >> out/out.workflow-geoebola-to-geocsv
+
